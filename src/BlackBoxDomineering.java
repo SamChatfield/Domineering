@@ -21,8 +21,8 @@ public class BlackBoxDomineering implements MoveChannel<DomineeringMove> {
 
     @Override
     public void giveMove(DomineeringMove move) {
-        System.out.println(move);
         System.out.flush();
+        System.out.println(move);
     }
 
     @Override
