@@ -5,6 +5,21 @@ import java.util.Scanner;
  */
 public class BlackBoxDomineering implements MoveChannel<DomineeringMove> {
 
+    public static void main(String[] args) {
+        assert (args.length == 4);
+        assert (args[0].equals("first") || args[0].equals("second"));
+        assert (args[1].equals("horizontal") || args[1].equals("vertical"));
+        assert (Integer.parseInt(args[2]) > 0 && Integer.parseInt(args[3]) > 0);
+
+        DomineeringBoard b = new DomineeringBoard(Integer.parseInt(args[2]), Integer.parseInt(args[3]));
+        if (args[0].equals("first") && args[1].equals("horizontal"))
+            b.tree().firstPlayer(new BlackBoxDomineering());
+        else if (args[0].equals("second") && args[1].equals("vertical"))
+            b.tree().secondPlayer(new BlackBoxDomineering());
+        else
+            System.exit(0);
+    }
+
     @Override
     public DomineeringMove getMove() {
         Scanner in = new Scanner(System.in);
@@ -21,8 +36,8 @@ public class BlackBoxDomineering implements MoveChannel<DomineeringMove> {
 
     @Override
     public void giveMove(DomineeringMove move) {
-        System.out.flush();
         System.out.println(move);
+        System.out.flush();
     }
 
     @Override
@@ -33,21 +48,6 @@ public class BlackBoxDomineering implements MoveChannel<DomineeringMove> {
     @Override
     public void end(int value) {
         System.err.println("Game over. The result is " + value);
-    }
-
-    public static void main(String[] args) {
-        assert (args.length == 4);
-        assert (args[0].equals("first") || args[0].equals("second"));
-        assert (args[1].equals("horizontal") || args[1].equals("vertical"));
-        assert (Integer.parseInt(args[2]) > 0 && Integer.parseInt(args[3]) > 0);
-
-        DomineeringBoard b = new DomineeringBoard(Integer.parseInt(args[2]), Integer.parseInt(args[3]));
-        if (args[0].equals("first") && args[1].equals("horizontal"))
-            b.tree().firstPlayer(new BlackBoxDomineering());
-        else if (args[0].equals("second") && args[1].equals("vertical"))
-            b.tree().secondPlayer(new BlackBoxDomineering());
-        else
-            System.exit(0);
     }
 
 }

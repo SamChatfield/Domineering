@@ -43,7 +43,8 @@ public class DomineeringBoard extends Board<DomineeringMove> {
             int y = m.getY();
             board[x][y] = true;
         }
-        if (nextPlayer().equals(H)) System.err.println(V); else System.err.println(H);
+        if (nextPlayer().equals(H)) System.err.println(V);
+        else System.err.println(H);
 
         for (DomineeringMove m : unionHV) {
             System.err.print("(" + m.getX() + "," + m.getY() + ") ");
@@ -59,6 +60,24 @@ public class DomineeringBoard extends Board<DomineeringMove> {
 //        }
 //        System.out.println();
         System.err.println(this);
+    }
+
+    private static Set<DomineeringMove> union(Set<DomineeringMove> a, Set<DomineeringMove> b) {
+        Set<DomineeringMove> c = new HashSet<>(a);
+//        c.addAll(a);
+        c.addAll(b);
+        return c;
+    }
+
+    private static Set<DomineeringMove> intersect(Set<DomineeringMove> a, Set<DomineeringMove> b) {
+        Set<DomineeringMove> c = new HashSet<>();
+        c.addAll(a);
+        c.retainAll(b);
+        return c;
+    }
+
+    private static boolean disjoint(Set<DomineeringMove> a, Set<DomineeringMove> b) {
+        return intersect(a, b).isEmpty();
     }
 
     private Set<DomineeringMove> allAvailable(Player p) {
@@ -82,10 +101,11 @@ public class DomineeringBoard extends Board<DomineeringMove> {
 
     @Override
     public Set<DomineeringMove> availableMoves() {
-        Set<DomineeringMove> av = new HashSet<>();
-        av.addAll(allAvailable(nextPlayer()));
-        av.removeAll(hMoves);
-        av.removeAll(vMoves);
+        Set<DomineeringMove> av = new HashSet<>(allAvailable(nextPlayer()));
+//        av.addAll(allAvailable(nextPlayer()));
+//        av.removeAll(hMoves);
+//        av.removeAll(vMoves);
+        av.removeAll(union(hMoves, vMoves));
 
         if (nextPlayer().equals(H)) {
             for (DomineeringMove m : hMoves) {
@@ -120,21 +140,6 @@ public class DomineeringBoard extends Board<DomineeringMove> {
 
     @Override
     public int value() {
-//        boolean avH = false;
-//        boolean avV = false;
-//
-//        for (DomineeringMove m : availableMoves()) {
-//            if (availableMoves().contains(new DomineeringMove(m.getX() + 1, m.getY()))) avH = true;
-//            else if (availableMoves().contains(new DomineeringMove(m.getX(), m.getY() + 1))) avV = true;
-//        }
-//
-//        System.out.println("av: " + avH + "," + avV);
-//        if (!avH && !avV) return nextPlayer().equals(H) ? -1 : 1;
-//        else if (avH)     return 1;
-//        else if (avV)     return -1;
-//        else              return 0;
-
-//        return availableMoves().size() > 1 ? 0 : nextPlayer().equals(H) ? -1 : 1;
         return !availableMoves().isEmpty() ? 0 : nextPlayer().equals(H) ? -1 : 1;
     }
 
@@ -175,8 +180,8 @@ public class DomineeringBoard extends Board<DomineeringMove> {
     }
 
     private Set<DomineeringMove> add(DomineeringMove move, Set<DomineeringMove> set) {
-        Set<DomineeringMove> setClone = new HashSet<>();
-        setClone.addAll(set);
+        Set<DomineeringMove> setClone = new HashSet<>(set);
+//        setClone.addAll(set);
         setClone.add(move);
 
         if (nextPlayer().equals(H)) {
@@ -200,24 +205,6 @@ public class DomineeringBoard extends Board<DomineeringMove> {
         }
 
         return setClone;
-    }
-
-    private static Set<DomineeringMove> union(Set<DomineeringMove> a, Set<DomineeringMove> b) {
-        Set<DomineeringMove> c = new HashSet<>(a.size() + b.size());
-        c.addAll(a);
-        c.addAll(b);
-        return c;
-    }
-
-    private static Set<DomineeringMove> intersect(Set<DomineeringMove> a, Set<DomineeringMove> b) {
-        Set<DomineeringMove> c = new HashSet<>();
-        c.addAll(a);
-        c.retainAll(b);
-        return c;
-    }
-
-    private static boolean disjoint(Set<DomineeringMove> a, Set<DomineeringMove> b) {
-        return intersect(a, b).isEmpty();
     }
 
     public String toString() {
