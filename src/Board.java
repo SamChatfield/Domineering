@@ -9,53 +9,56 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 
 public abstract class Board<Move> {
-  abstract Player nextPlayer();
-  abstract Set<Move> availableMoves(); 
-  abstract int value(); 
-  abstract Board<Move> play(Move move);
+    abstract Player nextPlayer();
 
-  // Constructs the game tree of the board using the minimax algorithm
-  // (without alpha-beta pruning):
-  public GameTree<Move> tree() {
-    if (availableMoves().isEmpty())
-      return new GameTree<Move>
-                    (this, 
-                     new LinkedHashMap<Move,GameTree<Move>>(), 
-                     value());
-    else
-      return (nextPlayer() == Player.MAXIMIZER ? maxTree() : minTree()); 
-  }
+    abstract Set<Move> availableMoves();
 
-  // Two helper methods for that, which call the above method tree:
-  public GameTree<Move> maxTree() {
-    assert(!availableMoves().isEmpty());
+    abstract int value();
 
-    int optimalOutcome = Integer.MIN_VALUE;
-    LinkedHashMap<Move,GameTree<Move>> children 
-                 = new LinkedHashMap<Move,GameTree<Move>>(); 
+    abstract Board<Move> play(Move move);
 
-    for (Move m : availableMoves()) {
-      GameTree<Move> subtree = play(m).tree();
-      children.put(m,subtree);
-      optimalOutcome = Math.max(optimalOutcome,subtree.optimalOutcome());
+    // Constructs the game tree of the board using the minimax algorithm
+    // (without alpha-beta pruning):
+    public GameTree<Move> tree() {
+        if (availableMoves().isEmpty())
+            return new GameTree<Move>
+                    (this,
+                            new LinkedHashMap<Move, GameTree<Move>>(),
+                            value());
+        else
+            return (nextPlayer() == Player.MAXIMIZER ? maxTree() : minTree());
     }
 
-    return new GameTree<Move>(this,children,optimalOutcome); 
-  }
+    // Two helper methods for that, which call the above method tree:
+    public GameTree<Move> maxTree() {
+        assert (!availableMoves().isEmpty());
 
-  public GameTree<Move> minTree() {
-    assert(!availableMoves().isEmpty());
+        int optimalOutcome = Integer.MIN_VALUE;
+        LinkedHashMap<Move, GameTree<Move>> children
+                = new LinkedHashMap<Move, GameTree<Move>>();
 
-    int optimalOutcome = Integer.MAX_VALUE;
-    LinkedHashMap<Move,GameTree<Move>> children 
-                 = new LinkedHashMap<Move,GameTree<Move>>(); 
+        for (Move m : availableMoves()) {
+            GameTree<Move> subtree = play(m).tree();
+            children.put(m, subtree);
+            optimalOutcome = Math.max(optimalOutcome, subtree.optimalOutcome());
+        }
 
-    for (Move m : availableMoves()) {
-      GameTree<Move> subtree = play(m).tree();
-      children.put(m,subtree);
-      optimalOutcome = Math.min(optimalOutcome,subtree.optimalOutcome());
+        return new GameTree<Move>(this, children, optimalOutcome);
     }
 
-    return new GameTree<Move>(this,children,optimalOutcome); 
-  }
+    public GameTree<Move> minTree() {
+        assert (!availableMoves().isEmpty());
+
+        int optimalOutcome = Integer.MAX_VALUE;
+        LinkedHashMap<Move, GameTree<Move>> children
+                = new LinkedHashMap<Move, GameTree<Move>>();
+
+        for (Move m : availableMoves()) {
+            GameTree<Move> subtree = play(m).tree();
+            children.put(m, subtree);
+            optimalOutcome = Math.min(optimalOutcome, subtree.optimalOutcome());
+        }
+
+        return new GameTree<Move>(this, children, optimalOutcome);
+    }
 }

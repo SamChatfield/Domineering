@@ -1,15 +1,16 @@
-// Game trees for abstract games two-person games with outcomes in the
-// type of integers, parametrized by a type of moves.
-
 import java.util.Map;
 
-public class GameTree<Move> {
-    private final Board<Move> board;
-    private final Map<Move, GameTree<Move>> children;
+/**
+ * Created by Sam on 30/03/2016.
+ */
+public class GameTree2<Move> {
+
+    private final Board2<Move> board;
+    private final Map<Move, GameTree2<Move>> children;
     private final int optimalOutcome;
 
-    public GameTree(Board<Move> board,
-                    Map<Move, GameTree<Move>> children,
+    public GameTree2(Board2<Move> board,
+                    Map<Move, GameTree2<Move>> children,
                     int optimalOutcome) {
 
         assert (board != null && children != null);
@@ -23,11 +24,11 @@ public class GameTree<Move> {
     }
 
     // Getter methods:
-    public Board<Move> board() {
+    public Board2<Move> board() {
         return board;
     }
 
-    public Map<Move, GameTree<Move>> children() {
+    public Map<Move, GameTree2<Move>> children() {
         return children;
     }
 
@@ -41,7 +42,7 @@ public class GameTree<Move> {
     // Number of tree nodes:
     public int size() {
         int size = 1;
-        for (Map.Entry<Move, GameTree<Move>> child : children.entrySet()) {
+        for (Map.Entry<Move, GameTree2<Move>> child : children.entrySet()) {
             size += child.getValue().size();
         }
         return size;
@@ -50,7 +51,7 @@ public class GameTree<Move> {
     // We take the height of a leaf to be zero (rather than -1):
     public int height() {
         int height = -1;
-        for (Map.Entry<Move, GameTree<Move>> e : children.entrySet()) {
+        for (Map.Entry<Move, GameTree2<Move>> e : children.entrySet()) {
             height = Math.max(height, e.getValue().height());
         }
         return 1 + height;
@@ -64,8 +65,8 @@ public class GameTree<Move> {
             assert (optimalOutcome == board.value());
             c.end(board.value());
         } else {
-            Map.Entry<Move, GameTree<Move>> optimalEntry = null;
-            for (Map.Entry<Move, GameTree<Move>> child : children.entrySet()) {
+            Map.Entry<Move, GameTree2<Move>> optimalEntry = null;
+            for (Map.Entry<Move, GameTree2<Move>> child : children.entrySet()) {
                 if (optimalOutcome == child.getValue().optimalOutcome) {
                     optimalEntry = child;
                     break;
@@ -90,4 +91,5 @@ public class GameTree<Move> {
             children.get(m).firstPlayer(c);
         }
     }
+
 }

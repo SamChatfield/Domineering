@@ -38,8 +38,8 @@ public class CommandLineDomineering implements MoveChannel<DomineeringMove> {
 
     public static void main(String[] args) {
         DomineeringBoard board = new DomineeringBoard();
-//        board.tree().firstPlayer(new CommandLineDomineering());
-        board.tree().secondPlayer(new CommandLineDomineering());
+        board.tree().firstPlayer(new CommandLineDomineering());
+//        board.tree().secondPlayer(new CommandLineDomineering());
     }
 
 }
