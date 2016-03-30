@@ -31,19 +31,6 @@ public class DomineeringBoard extends Board<DomineeringMove> {
         this.board = board;
     }
 
-//    private Set<DomineeringMove> allAvailable(Player p) {
-//        Set<DomineeringMove> av = new HashSet<>();
-//        int xLim = p.equals(H) ? w - 1 : w;
-//        int yLim = p.equals(H) ? h : h - 1;
-//
-//        for (int y = 0; y < yLim; y++) {
-//            for (int x = 0; x < xLim; x++) {
-//                av.add(new DomineeringMove(x, y));
-//            }
-//        }
-//        return av;
-//    }
-
     @Override
     public Player nextPlayer() {
         int movesTaken = 0;
@@ -104,34 +91,6 @@ public class DomineeringBoard extends Board<DomineeringMove> {
         }
     }
 
-//    private Set<DomineeringMove> add(DomineeringMove move, Set<DomineeringMove> set) {
-//        Set<DomineeringMove> setClone = new HashSet<>(set);
-////        setClone.addAll(set);
-//        setClone.add(move);
-//
-//        if (nextPlayer().equals(H)) {
-//            setClone.add(new DomineeringMove(move.getX() + 1, move.getY()));
-//        } else {
-//            setClone.add(new DomineeringMove(move.getX(), move.getY() + 1));
-//        }
-//
-//        return setClone;
-//    }
-
-//    private Set<DomineeringMove> remove(DomineeringMove origin, Set<DomineeringMove> set) {
-//        Set<DomineeringMove> setClone = new HashSet<>();
-//        setClone.addAll(set);
-//        setClone.remove(origin);
-//
-//        if (nextPlayer().equals(H)) {
-//            setClone.remove(new DomineeringMove(origin.getX() + 1, origin.getY()));
-//        } else {
-//            setClone.remove(new DomineeringMove(origin.getX(), origin.getY() + 1));
-//        }
-//
-//        return setClone;
-//    }
-
     public String toString() {
         String s = "";
         for (int y = 0; y < h; y++) {
@@ -142,7 +101,5 @@ public class DomineeringBoard extends Board<DomineeringMove> {
         }
         return s;
     }
-
-
 
 }
